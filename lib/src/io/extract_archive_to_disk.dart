@@ -252,6 +252,7 @@ Future<void> extractFileToDisk(String inputPath, String outputPath,
         } else {
           final output = File(filePath);
           final f = await output.create(recursive: true);
+          outputFile?.closeSync();
           outputFile = await f.open(mode: FileMode.write);
           final bytes = file.content as List<int>;
           await outputFile.writeFrom(bytes);
@@ -262,6 +263,7 @@ Future<void> extractFileToDisk(String inputPath, String outputPath,
           final link = Link(filePath);
           link.createSync(path.normalize(file.nameOfLinkedFile), recursive: true);
         } else {
+          outputStream?.closeSync();
           outputStream = OutputFileStream(filePath, bufferSize: bufferSize);
           file.writeContent(outputStream);
         }
